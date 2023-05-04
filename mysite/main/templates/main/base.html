@@ -98,7 +98,7 @@
 							
 							<div class="btn-group">
 								<button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-									{{ headerinfo.curency1 }}
+									{{ cur.name }}
 									<span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu">
@@ -106,9 +106,9 @@
 									{% csrf_token %}
 									
 									{% if cur.name == "usd" %}
-									<Button type="submit" name="AMD" value="400"> Change to AMD</Button>
+									<Button type="submit" name="AMD" value="400"> {{ headerinfo.curency2 }}</Button>
 									{% else %}
-									<Button type="submit" name="AMD" value="400"> Change to USD </Button>
+									<Button type="submit" name="AMD" value="400"> {{ headerinfo.curency3 }} </Button>
 									{% endif %}
 								</form>
 								</ul>
@@ -122,7 +122,7 @@
 								<li><a href="#"><i class="fa fa-user"></i> {{ headerinfo.account }}</a></li>
 								<li><a href="#"><i class="fa fa-star"></i> {{ headerinfo.wishlist }}</a></li>
 								<li><a href="{% url 'checkout' %}"><i class="fa fa-crosshairs"></i> {{ headerinfo.checkout }}</a></li>
-								<li><a href="{% url 'cart' %}"><i class="fa fa-shopping-cart"></i> {{ headerinfo.cart }}</a></li>
+								<li><a href="{% url 'cart' %}"><i class="fa fa-shopping-cart"></i> {{ headerinfo.cart }} ({{ cart_list | length }})</a></li>
 
                                 {% if user.is_authenticated %}
 								    <li><a href="{% url 'logout' %}"><i class="fa fa-user"></i>{{ user.username }} - {{ headerinfo.logout }}</a></li>

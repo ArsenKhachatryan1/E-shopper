@@ -3,7 +3,7 @@ from modeltranslation.translator import register, TranslationOptions
 
 @register(HeaderInfo)
 class HeaderInfoTranslationOptions(TranslationOptions):
-    fields = ('name', 'country1', 'country2', 'country1', 'account', 'wishlist', 'checkout', 'cart', 'login',
+    fields = ('name', 'country1', 'country2', 'country3', 'account', 'wishlist', 'checkout', 'cart', 'login',
               'logout', 'signup')
 
 

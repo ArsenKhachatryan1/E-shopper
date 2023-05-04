@@ -478,3 +478,17 @@
 	</section>
 	
 {% endblock %}
+
+
+
+
+{% for i in cart_list %}
+<tr class="cart_menu">
+	<td class="image">{{i.name}}</td>
+	<td class="description"></td>
+	<td class="price">{{ i.price }}</td>
+	<td class="quantity">Quantity</td>
+	<td class="total">Total</td>
+	<td></td>
+</tr>
+{% endfor %}

@@ -1,17 +1,18 @@
 from django.shortcuts import render, redirect
-from .models import HeaderInfo, HomeSlider, Category, SubCategory, Items, ContactUs, Curency
+from .models import HeaderInfo, HomeSlider, Category, SubCategory, Items, ContactUs, Curency, Cart
 
 from .forms import NewUserForm, ContactForm
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
+from . import curs
 
 # Create your views here.
 
 
 
 def index(request):
-    
+    curs.get_kurs()
     if request.method == 'POST':
         cur = Curency.objects.all()[0]
         amd = Curency.objects.all()[0].kurs_amd
@@ -36,6 +37,8 @@ def index(request):
     category_list = Category.objects.all()
     sub_categry_list = SubCategory.objects.all()
     items = Items.objects.all()
+    cart_list = Cart.objects.all()
+
     return render(request, 'main/index.html', context={
 	   'headerinfo':headerinfo,
 	   'act':'index',
@@ -44,7 +47,8 @@ def index(request):
 	   'category_list':category_list,
 	   'sub_categry_list':sub_categry_list,
 	   'items':items,
-        'cur':cur
+        'cur':cur,
+        'cart_list':cart_list
     })
 
 
@@ -92,13 +96,63 @@ def blog(request):
     })
 
 
+
+
 def cart(request):
+
+    curs.get_kurs()
+    total_sum = 0
+
+    if request.method == 'POST':
+        try:
+            prod_id = request.POST.get('id')
+            my_prod = Items.objects.get(id=prod_id)
+            Cart.objects.create(cart_prod=my_prod)
+            return redirect('index')
+        except:
+             pass
+
+        cur = Curency.objects.all()[0]
+        amd = Curency.objects.all()[0].kurs_amd
+        x = Cart.objects.all()
+        if cur.name == 'usd':
+            for i in x:
+                i.cart_prod.price = i.cart_prod.price * amd
+                i.cart_prod.save()
+            cur.name = 'amd'
+            cur.save()
+        elif cur.name == 'amd':
+            for i in x:
+                i.cart_prod.price = i.cart_prod.price / amd
+                i.cart_prod.save()
+            cur.name = 'usd'
+            cur.save()
+
     headerinfo = HeaderInfo.objects.all()[0]
+    cart_list = Cart.objects.all()
+    cur = Curency.objects.all()[0]  
+    for i in cart_list:
+        total_sum += i.cart_prod.price     
 
     return render(request,'main/cart.html', context={
 	   'headerinfo':headerinfo,
-	   'act':'cart'
+	   'act':'cart',
+        'cart_list':cart_list,
+        'cur':cur,
+        'total_sum':total_sum
     })
+
+
+
+
+def delete_prod(request):
+    if request.method == 'POST':
+        prod_id = request.POST.get('id')
+        Cart.objects.filter(id=prod_id).delete()
+        return redirect('cart')
+
+
+
 
 
 def checkout(request):
@@ -110,9 +164,14 @@ def checkout(request):
     })
 
 
+
 def contact_us(request):
     headerinfo = HeaderInfo.objects.all()[0]
     contactus = ContactUs.objects.all()
+    cur = Curency.objects.all()[0]
+    cart_list = Cart.objects.all()
+
+
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -123,7 +182,9 @@ def contact_us(request):
     return render(request,'main/contact-us.html', context={
 	   'headerinfo':headerinfo,
 	   'act':'contact_us',
-        'contactus':contactus
+        'contactus':contactus,
+        'cur':cur,
+        'cart_list':cart_list
     })
 
 

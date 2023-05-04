@@ -1,6 +1,6 @@
 from django.contrib import admin
 from modeltranslation.admin import TranslationAdmin
-from . models import HeaderInfo, HomeSlider, Category, SubCategory, Items, ContactUs, Curency
+from . models import HeaderInfo, HomeSlider, Category, SubCategory, Items, ContactUs, Curency, Cart
 
 
 class HeaderInfoAdmin(TranslationAdmin):
@@ -25,3 +25,4 @@ admin.site.register(SubCategory)
 admin.site.register(Items)
 admin.site.register(ContactUs)
 admin.site.register(Curency)
+admin.site.register(Cart)

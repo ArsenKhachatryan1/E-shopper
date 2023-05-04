@@ -19,10 +19,10 @@ class HeaderInfo(models.Model):
     country1 = models.CharField('Country 1', max_length=50, blank=True)
     country2 = models.CharField('Country 2', max_length=50, blank=True)
     country3 = models.CharField('Country 3', max_length=50, blank=True)
-    curency1 = models.CharField('CUrency 1', max_length=50, blank=True)
-    curency2 = models.CharField('CUrency 2', max_length=50, blank=True)
-    curency3 = models.CharField('CUrency 3', max_length=50, blank=True)
-    account = models.CharField('accaunt', max_length=50)
+    curency1 = models.CharField('Curency 1', max_length=50, blank=True)
+    curency2 = models.CharField('Curency 2', max_length=50, blank=True)
+    curency3 = models.CharField('Curency 3', max_length=50, blank=True)
+    account = models.CharField('Account', max_length=50)
     wishlist = models.CharField('wishlist', max_length=50)
     checkout = models.CharField('checkout', max_length=50)
     cart = models.CharField('cart', max_length=50)
@@ -46,8 +46,8 @@ class HomeSlider(models.Model):
     name2 = models.CharField('Slider name2', max_length=30)
     text = models.TextField('Slider text')
     button_name = models.CharField('Slider button name', max_length=20)
-    img = models.ImageField('Slider image1', upload_to='media')
-    img_logo = models.ImageField('Slider image2', upload_to='media')
+    img = models.ImageField('Slider image1', upload_to='images')
+    img_logo = models.ImageField('Slider image2', upload_to='images')
 
     def __str__(self):
         return self.name1
@@ -125,3 +125,12 @@ class Curency(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+
+
+class Cart(models.Model):
+
+    cart_prod = models.ForeignKey(Items, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return self.cart_prod.name
